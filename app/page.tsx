@@ -1,11 +1,23 @@
 import Image from "next/image";
 import axios from "axios";
+import client from "@/db"
 
+// async function getUserDetails() {
+//   await new Promise((r)=>setTimeout(r,2000));
+//   const response = await axios.get("http://localhost:3000/api/user");
+// 	return response.data;
+// }
 
 async function getUserDetails() {
-  await new Promise((r)=>setTimeout(r,2000));
-  const response = await axios.get("http://localhost:3000/api/user");
-	return response.data;
+   try {
+    const user = await client.user.findFirst({});
+	  return {
+      name: user?.username,
+      email: user?.username
+    }
+  }  catch(e) {
+    console.log(e);
+  }
 }
 
 //async component
