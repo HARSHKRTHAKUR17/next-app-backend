@@ -29,18 +29,29 @@ export function GET(){
 //     })
 // }
 import { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { PrismaClient } from "@/app/generated/prisma";
 
-export async function POST(req: NextRequest){
+const client = new PrismaClient();
 
-    //extract the body
+export async function POST(req: NextRequest) {
     const body = await req.json();
+    // should add zod validation here
+    const user = await client.user.create({
+        data: {
+            username: body.username,
+            password: body.password
+        }
+    });
 
-    //store the body in the database
-    console.log(body);
-    
-    return Response.json({
-        message: "You are logged in!"
-    })
+    console.log(user.id);
+
+    return NextResponse.json({ message: "Signed up" });
 }
+
+// export async function GET() {
+//     const user = await client.user.findFirst({});
+//     return Response.json({ name: user?.username, email: user?.username })
+// }
 
 
